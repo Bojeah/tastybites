@@ -1,12 +1,27 @@
-FROM node:22-alpine AS builder
+# Use Node to build the frontend
+FROM node:20-alpine AS builder
 
 WORKDIR /app
+
+# Install dependencies
 COPY package*.json ./
 RUN npm install
-COPY . ./
-RUN npm run build || echo "Build failed due to missing native binding"
 
+# Copy source code
+COPY . .
+
+# Build for production
+RUN npm run build
+
+# Serve with NGINX
 FROM nginx:1.28-alpine
+
+# Copy built files from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
-# DO NOT COPY a default.conf here!
+
+# Optional: Custom nginx.conf (if needed for frontend-only routing)
+# COPY ./nginx/frontend.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

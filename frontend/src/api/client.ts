@@ -1,5 +1,6 @@
 
-const API_URL = "http://localhost:8000";
+const API_URL = "/api";
+
 
 export async function fetchCustomers() {
   const res = await fetch(`${API_URL}/customers/`);
