@@ -1,6 +1,10 @@
-const API_URL =
+const configuredApiUrl =
   (import.meta as ImportMeta & { env?: { VITE_API_URL?: string } }).env
-    ?.VITE_API_URL || "/api";
+    ?.VITE_API_URL;
+const normalizedApiUrl = configuredApiUrl?.replace(/\/+$/, "");
+const API_URL = normalizedApiUrl
+  ? `${normalizedApiUrl}${normalizedApiUrl.endsWith("/api") ? "" : "/api"}`
+  : "/api";
 
 export async function fetchCustomers() {
   const res = await fetch(`${API_URL}/customers/`);

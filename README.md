@@ -185,6 +185,7 @@ The backend creates the tables on application startup using SQLAlchemy metadata.
 - Nginx serves the frontend and proxies `/api/` requests to the backend service.
 - Client-side routes fall back to `index.html`, allowing direct navigation to routes such as `/customers` and `/orders`.
 - The backend allows CORS requests from `http://localhost:5173` and `http://tastybites.com`.
+- For separate hosting, set `VITE_API_URL` to the backend URL and `CORS_ORIGINS` to the exact frontend origin, without a trailing slash. The frontend adds `/api` automatically if it is missing.
 
 ## License
 
