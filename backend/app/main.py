@@ -3,6 +3,7 @@ from . import models
 from .db import engine
 from . import crud
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 # Only run once, not every restart
 models.Base.metadata.create_all(bind=engine)
@@ -10,8 +11,12 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",
-    "http://tastybites.com",
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ORIGINS",
+        "http://localhost:5173,http://tastybites.com",
+    ).split(",")
+    if origin.strip()
 ]
 
 app.add_middleware(
